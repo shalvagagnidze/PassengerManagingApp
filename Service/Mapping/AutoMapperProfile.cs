@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Domain.Entities;
 using Service.Models;
+using Service.Models.ResponseModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,8 @@ namespace Service.Mapping
             CreateMap<BusModel, Bus>();
             CreateMap<Driver, DriverModel>();
             CreateMap<DriverModel, Driver>();
+            CreateMap<Driver, DriverResponseModel>();
+            CreateMap<DriverResponseModel, Driver>();
             CreateMap<Flight, FlightModel>();
             CreateMap<FlightModel, Flight>();
         }

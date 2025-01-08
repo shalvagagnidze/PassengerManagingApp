@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Service.Interfaces;
 using Service.Models;
+using Service.Models.ResponseModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace Service.Services
         public async Task<IActionResult> GetAllDrivers()
         {
             var drivers = await _unitOfWork.DriverRepository.GetAllAsync();
-            return new OkObjectResult(_mapper.Map<List<DriverModel>>(drivers));
+            return new OkObjectResult(_mapper.Map<List<DriverResponseModel>>(drivers));
         }
 
         public async Task<IActionResult> GetDriver(int id)
