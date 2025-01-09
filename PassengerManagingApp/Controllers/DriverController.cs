@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;
 using Service.Models;
 
@@ -7,6 +8,7 @@ namespace PassengerManagingApp.Controllers
 
     [ApiController]
     [Route("[controller]")]
+    [EnableCors("AllowAllOrigins")]
     public class DriverController : ControllerBase
     {
         private readonly IDriverService _driverService;
@@ -33,7 +35,7 @@ namespace PassengerManagingApp.Controllers
             return await _driverService.GetDriver(id);
         }
 
-        [HttpPost("add-driver")]
+        [HttpPost("create")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
@@ -42,7 +44,7 @@ namespace PassengerManagingApp.Controllers
             return await _driverService.AddDriver(driver);
         }
 
-        [HttpPut("update-driver")]
+        [HttpPut("update")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
@@ -52,7 +54,7 @@ namespace PassengerManagingApp.Controllers
         }
 
 
-        [HttpPut("delete-driver")]
+        [HttpPut("delete")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]

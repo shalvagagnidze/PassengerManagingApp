@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;
 using Service.Models;
 
@@ -6,6 +7,7 @@ namespace PassengerManagingApp.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [EnableCors("AllowAllOrigins")]
     public class FlightController : ControllerBase
     {
         private readonly IFlightService _flightService; 
@@ -32,7 +34,7 @@ namespace PassengerManagingApp.Controllers
             return await _flightService.GetFlight(id);
         }
 
-        [HttpPost("add-flight")]
+        [HttpPost("create")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
@@ -41,7 +43,7 @@ namespace PassengerManagingApp.Controllers
             return await _flightService.AddFlight(bus);
         }
 
-        [HttpPut("update-flight")]
+        [HttpPut("update")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
@@ -51,7 +53,7 @@ namespace PassengerManagingApp.Controllers
         }
 
 
-        [HttpPut("delete-flight")]
+        [HttpPut("delete")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]

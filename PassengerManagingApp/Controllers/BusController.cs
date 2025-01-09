@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;
 using Service.Models;
@@ -7,6 +8,7 @@ namespace PassengerManagingApp.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [EnableCors("AllowAllOrigins")]
     public class BusController : ControllerBase
     {
         private readonly IBusService _busService;
@@ -33,16 +35,16 @@ namespace PassengerManagingApp.Controllers
             return await _busService.GetBus(id);
         }
 
-        [HttpPost("add-bus")]
+        [HttpPost]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> CreateBus(BusModel bus)
+        public async Task<IActionResult> CreateBus([FromBody]BusModel bus)
         {
             return await _busService.AddBus(bus);
         }
 
-        [HttpPut("update-bus")]
+        [HttpPut("update")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
@@ -52,7 +54,7 @@ namespace PassengerManagingApp.Controllers
         }
 
 
-        [HttpPut("delete-bus")]
+        [HttpPut("delete")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
