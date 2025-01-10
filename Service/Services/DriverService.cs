@@ -111,7 +111,15 @@ namespace Service.Services
 
             existing.FirstName = model.FirstName;
             existing.LastName = model.LastName;
-            existing.PhoneNumber = model.PhoneNumber;
+            if (model.PhoneNumber!.StartsWith("+995"))
+            {
+                existing.PhoneNumber = model.PhoneNumber;
+            }
+            else
+            {
+                existing.PhoneNumber = $"+995{model.PhoneNumber}";
+            }
+            
             //existing.Bus = _mapper.Map<Bus>(model.Bus);
             var newBus = await _unitOfWork.BusRepository.GetByIdAsync(model.BusId);
 

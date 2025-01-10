@@ -54,7 +54,7 @@ namespace PassengerManagingApp.Controllers
         }
 
 
-        [HttpPut("delete")]
+        [HttpPut("delete/{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
