@@ -17,12 +17,14 @@ namespace Service
         public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddHttpClient();
+            services.AddMemoryCache();
             services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
             services.AddTransient<IBusService,BusService>();
             services.AddTransient<IDriverService,DriverService>();
             services.AddTransient<IFlightService,FlightService>();
             services.AddTransient<ITimeTableService, TimeTableService>();
+            services.AddTransient<ITimeTableService, CachedTimeTableService>();
 
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
