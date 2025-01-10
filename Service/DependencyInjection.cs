@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Service.Services.TimeTableService;
 
 namespace Service
 {
@@ -15,12 +16,13 @@ namespace Service
     {
         public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
-
+            services.AddHttpClient();
             services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
             services.AddTransient<IBusService,BusService>();
             services.AddTransient<IDriverService,DriverService>();
             services.AddTransient<IFlightService,FlightService>();
+            services.AddTransient<ITimeTableService, TimeTableService>();
 
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
