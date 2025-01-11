@@ -101,29 +101,61 @@ namespace Service.Services
                     }
                 }
 
-                DateTime today = DateTime.Today;
-                DateTime startTime = today.AddHours(22); // Current day 22:00
-                DateTime endTime = today.AddDays(1).AddHours(6).AddMinutes(30); // Following day 06:30
+                DateTime now = DateTime.Now;
+                DateTime startTime;
+                DateTime endTime;
+
+                if (now.Hour < 6 || (now.Hour == 6 && now.Minute <= 30))
+                {
+                    startTime = DateTime.Today.AddDays(-1).AddHours(22); // Previous day 22:00
+                    endTime = DateTime.Today.AddHours(6).AddMinutes(30);  // Today 06:30
+                }
+                else
+                {
+                    // Otherwise, look at today's 22:00 to tomorrow's 06:30
+                    startTime = DateTime.Today.AddHours(22);              // Today 22:00
+                    endTime = DateTime.Today.AddDays(1).AddHours(6).AddMinutes(30); // Tomorrow 06:30
+                }
 
                 var filteredResponse = new TimeTableResponse
                 {
                     Entries = timeTableResponse.Entries
-                                                        .Select(entry =>
-                                                        {
-                                                            var filteredRoutes = entry.Routes.Where(route =>
-                                                            {
-                                                                var departureDateTime = ParseDateTime(entry.Date, route.DepartureTime);
-                                                                return departureDateTime >= startTime && departureDateTime <= endTime;
-                                                            }).ToList();
+                .Select(entry =>
+                {
+                    var filteredRoutes = entry.Routes.Where(route =>
+                    {
+                        var departureDateTime = ParseDateTime(entry.Date, route.DepartureTime);
 
-                                                            return new TimeTableEntry
-                                                            {
-                                                                Date = entry.Date,
-                                                                Routes = filteredRoutes
-                                                            };
-                                                        })
-                                                        .Where(entry => entry.Routes.Any()) // Remove entries with no routes
-                                                        .ToList()
+                        // Handle the case when departure is before midnight
+                        if (departureDateTime.Hour >= 22)
+                        {
+                            // If we're after midnight, adjust the date to previous day
+                            if (now.Hour < 6 || (now.Hour == 6 && now.Minute <= 30))
+                            {
+                                departureDateTime = departureDateTime.AddDays(-1);
+                            }
+                        }
+                        // Handle the case when departure is after midnight
+                        else if (departureDateTime.Hour < 6 || (departureDateTime.Hour == 6 && departureDateTime.Minute <= 30))
+                        {
+                            // If we're before midnight, adjust the date to next day
+                            if (now.Hour >= 22)
+                            {
+                                departureDateTime = departureDateTime.AddDays(1);
+                            }
+                        }
+
+                        return departureDateTime >= startTime && departureDateTime <= endTime;
+                    }).ToList();
+
+                    return new TimeTableEntry
+                    {
+                        Date = entry.Date,
+                        Routes = filteredRoutes
+                    };
+                })
+                .Where(entry => entry.Routes.Any())
+                .ToList()
                 };
 
 
