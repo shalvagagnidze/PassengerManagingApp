@@ -17,7 +17,8 @@ namespace Infrastructure
         {
             services.AddDbContext<PassengerAppDbContext>(options =>
             {
-                options.UseNpgsql(configuration.GetConnectionString("PassengerApp"));
+                options.UseSqlServer(configuration.GetConnectionString("PassengerApp"));
+                
             });
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
