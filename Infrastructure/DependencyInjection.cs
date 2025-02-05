@@ -17,8 +17,15 @@ namespace Infrastructure
         {
             services.AddDbContext<PassengerAppDbContext>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("PassengerApp"));
-                
+                options.UseSqlServer(configuration.GetConnectionString("PassengerApp"), sqlServerOptions =>
+                {
+                    sqlServerOptions.EnableRetryOnFailure(
+                        maxRetryCount: 5,
+                        maxRetryDelay: TimeSpan.FromSeconds(30),
+                        errorNumbersToAdd: null
+                    );
+                });
+
             });
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
