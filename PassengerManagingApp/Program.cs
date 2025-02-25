@@ -23,29 +23,29 @@ builder.Services.AddCors(options =>
     });
 });
 
-static void ConfigureAzureKeyVault(WebApplicationBuilder builder)
-{
-    if (builder.Environment.IsProduction() || builder.Environment.IsStaging())
-    {
-        var keyVaultUrl = builder.Configuration["https://passengerapp.vault.azure.net/"];
+//static void ConfigureAzureKeyVault(WebApplicationBuilder builder)
+//{
+//    if (builder.Environment.IsProduction() || builder.Environment.IsStaging())
+//    {
+//        var keyVaultUrl = builder.Configuration["https://passengerapp.vault.azure.net/"];
 
-        // Use DefaultAzureCredential for RBAC
-        var credential = new DefaultAzureCredential(
-            new DefaultAzureCredentialOptions
-            {
-                // Optional: Specify tenant if needed
-                // TenantId = "your-tenant-id"
-            }
-        );
+//        // Use DefaultAzureCredential for RBAC
+//        var credential = new DefaultAzureCredential(
+//            new DefaultAzureCredentialOptions
+//            {
+//                // Optional: Specify tenant if needed
+//                // TenantId = "your-tenant-id"
+//            }
+//        );
 
-        builder.Configuration.AddAzureKeyVault(
-                new Uri(keyVaultUrl),
-                credential,
-                new KeyVaultSecretManager()
-            );
-    }
-}
-ConfigureAzureKeyVault(builder);
+//        builder.Configuration.AddAzureKeyVault(
+//                new Uri(keyVaultUrl),
+//                credential,
+//                new KeyVaultSecretManager()
+//            );
+//    }
+//}
+//ConfigureAzureKeyVault(builder);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
